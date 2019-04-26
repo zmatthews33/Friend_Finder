@@ -1,4 +1,4 @@
-# It's Always Sunny -Friend Finder
+# Friend Finder (It's Always Sunny in Philadelphia Edition)
 
 A Node and Express application that will help you find which member of the Gang matches most with your personality. After answering the questions, you'll be shown your match, and your name and info will be added to the data pool for future friend searches as well.
 
