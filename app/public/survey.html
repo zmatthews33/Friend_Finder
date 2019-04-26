@@ -67,31 +67,23 @@
     </div>
 
     <!-- Results Modal -->
-    <div id="results-modal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-            <h2 class="modal-title"><strong>Best Match</strong></h2>
+    <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h2 class="modal-title"><strong>Best Match</strong></h2>
+            </div>
+            <div class="modal-body">
+              <h2 id="match-name"></h2>
+              <img id="match-img" >
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
           </div>
-          <div class="modal-body">
-            <h2 id="match-name"></h2>
-            <img
-              id="match-img"
-              src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/p/6/005/064/1bd/3435aa3.jpg"
-              alt=""
-            />
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Close
-            </button>
-          </div>
+    
         </div>
       </div>
-    </div>
+    
 
     <script type="text/javascript">
       $(document).ready(function() {
@@ -169,7 +161,7 @@
           $(".form-control").each(function() {
             if ($(this).val() === "") {
               if ($(this).attr("id") === "photo") {
-                $("#photo").val("Stormtrooper.jpg");
+                $("#photo").val("");
               } else {
                 isValid = false;
               }
