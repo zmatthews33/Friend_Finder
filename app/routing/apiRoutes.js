@@ -1,10 +1,3 @@
-//Your apiRoutes.js file should contain two routes:
-
-//1. A GET route with the url /api/friends. This will be used
-//to display a JSON of all possible friends.
-//2. A POST routes /api/friends. This will be used
-//to handle incoming survey results. This route will
-//also be used to handle the compatibility logic.
 const express = require("express");
 const router = express.Router();
 const path = require("path");
@@ -13,14 +6,11 @@ const fileName = "../data/friends.json";
 const file = require(fileName);
 
 router.get("/api/friends", (req, res) => {
-  res.json({ response: "api" });
+  res.json(file);
 });
 
 router.post("/api/friends", (req, res) => {
-  // save to the file?
-  // get the current scores and compare them with each of the other friends
-
-  const Scores = req.body[0].scores;
+  const Scores = req.body.scores.map(score => parseInt(score));
 
   let matchNumber = null;
   let matches = [];
@@ -34,19 +24,24 @@ router.post("/api/friends", (req, res) => {
     if (matchNumber === null || matchNumber > difference) {
       matchNumber = difference;
       matches.length = 0;
-      matches.push(friend.name);
-    }
-
-    // in case there is a tie...
-    if (matchNumber === difference) {
-      matches.push(friend.name);
+      matches.push(friend);
+    } else if (matchNumber === difference) {
+      matches.push(friend);
     }
   }
+  const NewFriend = req.body;
+  NewFriend.scores = Scores;
+  const UpdatedFile = [...file, NewFriend];
 
-  console.log(matchNumber);
-  console.log(matches);
-
-  res.json("api");
+  fs.writeFile(
+    path.join(__dirname, "../data/friends.json"),
+    JSON.stringify(UpdatedFile),
+    err => {
+      if (err) throw err;
+      console.log("written...");
+      res.json(matches);
+    }
+  );
 });
 
 module.exports = router;
