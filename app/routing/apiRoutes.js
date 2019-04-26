@@ -38,7 +38,7 @@ router.post("/api/friends", (req, res) => {
     JSON.stringify(UpdatedFile),
     err => {
       if (err) throw err;
-      console.log("written...");
+      console.log("it worked!");
       res.json(matches);
     }
   );

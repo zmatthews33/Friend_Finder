@@ -1,213 +1,203 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>FriendFinder</title>
 
-    <!-- Latest compiled and minified CSS & JS -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-    />
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<head>
+  <meta charset="UTF-8" />
+  <title>FriendFinder</title>
 
-    <!-- Font Awesome Glyphicons -->
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css"
-    />
+  <!-- Latest compiled and minified CSS & JS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+  <script src="https://code.jquery.com/jquery.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-    <!-- Chosen -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css"
-    />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
-  </head>
+  <!-- Font Awesome Glyphicons -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css" />
 
-  <body>
-    <div class="container">
-      <h2>Survey Questions</h2>
-      <hr />
+  <!-- Chosen -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.5.1/chosen.jquery.min.js"></script>
+</head>
 
-      <h3><strong>About You</strong></h3>
+<body>
+  <div class="container">
+    <h2>Survey Questions</h2>
+    <hr />
 
-      <h4>Name (Required)</h4>
-      <input type="text" id="name" class="form-control" required />
+    <h3><strong>About You</strong></h3>
 
-      <h4>Link to Your Profile Picture</h4>
-      <input type="text" id="photo" class="form-control" />
+    <h4>Name (Required)</h4>
+    <input type="text" id="name" class="form-control" required />
 
-      <hr />
+    <h4>Link to Your Profile Picture</h4>
+    <input type="text" id="photo" class="form-control" />
 
-      <div class="questions"></div>
+    <hr />
 
-      <br />
-      <br />
+    <div class="questions"></div>
 
-      <!-- Submit Button -->
-      <button
-        type="submit"
-        class="btn btn-primary btn-lg btn-block"
-        id="submit"
-      >
-        <i class="fa fa-check-circle" aria-hidden="true"></i> Submit
-      </button>
+    <br />
+    <br />
 
-      <hr />
-      <footer class="footer">
-        <div class="container">
-          <p>
-            <a href="/api/friends">API Friends List</a> |
-            <a href="https://github.com/afhaque/friendfinder">GitHub Repo</a>
-          </p>
+    <!-- Submit Button -->
+    <button type="submit" class="btn btn-primary btn-lg btn-block" id="submit">
+      <i class="fa fa-check-circle" aria-hidden="true"></i> Submit
+    </button>
+
+    <hr />
+    <footer class="footer">
+      <div class="container">
+        <p>
+          <a href="/api/friends">API Friends List</a> |
+          <a href="https://github.com/afhaque/friendfinder">GitHub Repo</a>
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Modal -->
+  <div id="results-modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">
+            &times;
+          </button>
+          <h2 class="modal-title"><strong>Best Match</strong></h2>
         </div>
-      </footer>
-    </div>
+        <div class="modal-body">
+          <h2 id="match-name"></h2>
 
-    <!-- Modal -->
-    <div id="results-modal" class="modal fade" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
-            <h2 class="modal-title"><strong>Best Match</strong></h2>
-          </div>
-          <div class="modal-body">
-            <h2 id="match-name"></h2>
-            <img id="match-img" src="" alt="" />
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">
-              Close
-            </button>
-          </div>
+          <img id="match-img" class="img-responsive" src="" alt="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">
+            Close
+          </button>
         </div>
       </div>
     </div>
+  </div>
 
-    <script type="text/javascript">
-      $(document).ready(function() {
-        var questions = [
-          "Though you have little actual talent, you honestly believe you are a talented actress, comedian, and singer.",
-          "You prefer cut the sleeves off of your t-shirts as to be more agile (and to show your tattoos)..",
-          "You eat cereal while sitting in traffic.",
-          "You always carry a pistol and enjoy hanging out with hookers, guys under bridges, and other sordid characters.",
-          "Your behavior is narcissistic, sociopathic, superficial, selfish, and your self-worth is entirely dependent on what others think of you.",
-          "Your friends think you are extremely ugly and often say that you resemble a bird.",
-          "You enjoy eating cat food and huffing spray paint or glue.",
-          "You have a 'toe knife' and a mini meats fridge in your home.",
-          "You often brag about your hand-to-hand combat skills although your friends know you are extremely clumsy and uncoordinated.",
-          "You often find yourself asking about a business's spaghetti policy.",
-          "You enjoy your current group of friends."
-        ];
-        $.each(questions, function(idx, val) {
-          var num = idx + 1;
-          var question = $("<div>");
-          var title = $("<h3>").text("Question " + num);
-          var ques = $("<h4>").text(val);
-          var select = $("<select>")
-            .attr("id", "q" + num)
-            .addClass("chosen-select");
-          var option0 = $("<option>")
-            .attr("value", "")
-            .text("");
-          var option1 = $("<option>")
-            .attr("value", 1)
-            .text("1 (Strongly Disagree)");
-          var option2 = $("<option>")
-            .attr("value", 2)
-            .text("2");
-          var option3 = $("<option>")
-            .attr("value", 3)
-            .text("3");
-          var option4 = $("<option>")
-            .attr("value", 4)
-            .text("4");
-          var option5 = $("<option>")
-            .attr("value", 5)
-            .text("5 (Strongly Agree)");
-          select.append(option0, option1, option2, option3, option4, option5);
-          question.append(title, ques, select);
-          $(".questions").append(question);
-        });
-        // Chosen CSS
-        var config = {
-          ".chosen-select": {
-            disable_search: true
-          },
-          ".chosen-select-deselect": {
-            allow_single_deselect: true,
-            disable_search: true
-          },
-          ".chosen-select-no-single": {
-            disable_search: true
-          },
-          ".chosen-select-no-results": {
-            no_results_text: "Oops, nothing found!"
-          },
-          ".chosen-select-width": {
-            width: "95%"
-          }
-        };
-        for (var selector in config) {
-          $(selector).chosen(config[selector]);
-        }
+  <script type="text/javascript">
+    $(document).ready(function () {
+      var questions = [
+        "Though you have little actual talent, you honestly believe you are a talented actress, comedian, and singer.",
+        "You prefer cut the sleeves off of your t-shirts as to be more agile (and to show your tattoos)..",
+        "You eat cereal while sitting in traffic.",
+        "You always carry a pistol and enjoy hanging out with hookers, guys under bridges, and other sordid characters.",
+        "Your behavior is narcissistic, sociopathic, superficial, selfish, and your self-worth is entirely dependent on what others think of you.",
+        "Your friends think you are extremely ugly and often say that you resemble a bird.",
+        "You enjoy eating cat food and huffing spray paint or glue.",
+        "You have a 'toe knife' and a mini meats fridge in your home.",
+        "You often brag about your hand-to-hand combat skills although your friends know you are extremely clumsy and uncoordinated.",
+        "You often find yourself asking about a business's spaghetti policy.",
+        "You enjoy your current group of friends."
+      ];
+      $.each(questions, function (idx, val) {
+        var num = idx + 1;
+        var question = $("<div>");
+        var title = $("<h3>").text("Question " + num);
+        var ques = $("<h4>").text(val);
+        var select = $("<select>")
+          .attr("id", "q" + num)
+          .addClass("chosen-select");
+        var option0 = $("<option>")
+          .attr("value", "")
+          .text("");
+        var option1 = $("<option>")
+          .attr("value", 1)
+          .text("1 (Strongly Disagree)");
+        var option2 = $("<option>")
+          .attr("value", 2)
+          .text("2");
+        var option3 = $("<option>")
+          .attr("value", 3)
+          .text("3");
+        var option4 = $("<option>")
+          .attr("value", 4)
+          .text("4");
+        var option5 = $("<option>")
+          .attr("value", 5)
+          .text("5 (Strongly Agree)");
+        select.append(option0, option1, option2, option3, option4, option5);
+        question.append(title, ques, select);
+        $(".questions").append(question);
       });
-      // Capture the form inputs
-      $("#submit").on("click", function(event) {
-        event.preventDefault();
-        // Form validation
-        function validateForm() {
-          var isValid = true;
-          $(".form-control").each(function() {
-            if ($(this).val() === "") {
-              if ($(this).attr("id") === "photo") {
-                $("#photo").val("");
-              } else {
-                isValid = false;
-              }
-            }
-          });
-          $(".chosen-select").each(function() {
-            if ($(this).val() === "") {
+      // Chosen CSS
+      var config = {
+        ".chosen-select": {
+          disable_search: true
+        },
+        ".chosen-select-deselect": {
+          allow_single_deselect: true,
+          disable_search: true
+        },
+        ".chosen-select-no-single": {
+          disable_search: true
+        },
+        ".chosen-select-no-results": {
+          no_results_text: "Oops, nothing found!"
+        },
+        ".chosen-select-width": {
+          width: "95%"
+        }
+      };
+      for (var selector in config) {
+        $(selector).chosen(config[selector]);
+      }
+    });
+    // Capture the form inputs
+    $("#submit").on("click", function (event) {
+      event.preventDefault();
+      // Form validation
+      function validateForm() {
+        var isValid = true;
+        $(".form-control").each(function () {
+          if ($(this).val() === "") {
+            if ($(this).attr("id") === "photo") {
+              $("#photo").val("");
+            } else {
               isValid = false;
             }
-          });
-          return isValid;
-        }
-        // If all required fields are filled
-        if (validateForm()) {
-          // Create an object for the user's data
-          var userData = {
-            name: $("#name").val(),
-            photo: $("#photo").val(),
-            scores: [
-              $("#q1").val(),
-              $("#q2").val(),
-              $("#q3").val(),
-              $("#q4").val(),
-              $("#q5").val(),
-              $("#q6").val(),
-              $("#q7").val(),
-              $("#q8").val(),
-              $("#q9").val(),
-              $("#q10").val(),
-              $("#q11").val()
-            ]
-          };
-          $.post("/api/friends", userData, function(data) {
-            $("#match-name").text(data[0].name);
-            $("#match-img").attr("src", "/" + data[0].photo);
-            $("#results-modal").modal("toggle");
-          });
-        } else {
-          alert("Please fill out all fields before submitting!");
-        }
-      });
-    </script>
-  </body>
+          }
+        });
+        $(".chosen-select").each(function () {
+          if ($(this).val() === "") {
+            isValid = false;
+          }
+        });
+        return isValid;
+      }
+      // If all required fields are filled
+      if (validateForm()) {
+        // Create an object for the user's data
+        var userData = {
+          name: $("#name").val(),
+          photo: $("#photo").val(),
+          scores: [
+            $("#q1").val(),
+            $("#q2").val(),
+            $("#q3").val(),
+            $("#q4").val(),
+            $("#q5").val(),
+            $("#q6").val(),
+            $("#q7").val(),
+            $("#q8").val(),
+            $("#q9").val(),
+            $("#q10").val(),
+            $("#q11").val()
+          ]
+        };
+        $.post("/api/friends", userData, function (data) {
+          $("#match-name").text(data[0].name);
+          $("#match-img").attr("src", '/' + data[0].photo);
+          $("#results-modal").modal("toggle");
+        });
+      } else {
+        alert("Fill out all fields before submitting, you Jabroni!");
+      }
+    });
+  </script>
+</body>
+
 </html>
